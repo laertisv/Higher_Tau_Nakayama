@@ -366,9 +366,11 @@ function startWithChosen(){
   let support_input = [];
   if (rigid_input_temp){
       rigid_input = rigid_input_temp.split(",").filter(x=>x);
+      rigid_input = rigid_input.map(x=>x.trim());
   }
   if (support_input_temp) {
       support_input = support_input_temp.split(",").filter(x=>x);
+      rigid_input = rigid_input.map(x=>x.trim());
   }
   let regex = /M-[0-9]+-[0-9]+/i;
   for (let i in rigid_input){
