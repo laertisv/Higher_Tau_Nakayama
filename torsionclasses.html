@@ -53,20 +53,43 @@
   aspect-ratio: 4/3;
 }
 
+/* Remove the second .dropbtn style block and keep only this one */
+.dropbtn {
+    background-color: #04AA6D;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    pointer-events: all;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
+}
+
 .dropbtn[disabled] {
-    background-color: #cccccc;
     cursor: not-allowed;
+    pointer-events: none;
+    box-shadow: none;
+    opacity: 0.9; /* Just slightly dimmed */
+}
+
+.dropbtn:not([disabled]):hover {
+    background-color: #3e8e41;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 #sequential-dropdowns {
     display: flex;
-    flex-direction: column;
+    flex-flow: row wrap;
     gap: 10px;
+    width: 100%;
 }
 
 .dropdown {
     position: relative;
-    display: inline-block;
+    flex: 1;
+    min-width: 200px; /* Minimum width before wrapping */
+    margin-bottom: 10px;
 }
   </style>
     
@@ -95,15 +118,7 @@
     
 
 <style>
-.dropbtn {
-  background-color: #04AA6D;
-  color: white;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
-  pointer-events: all;
-}
+
 
 .dropbtn:hover, .dropbtn:focus {
   background-color: #3e8e41;
@@ -213,6 +228,7 @@
           <div id="sequential-dropdowns">
               <!-- Dropdowns will be inserted dynamically -->
           </div>
+          <button type="button" class="updateButton" onclick="resetDropdowns()">Reset Arrows</button>
 </div>
 
 

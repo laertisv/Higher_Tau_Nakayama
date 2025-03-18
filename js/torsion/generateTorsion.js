@@ -257,7 +257,7 @@ function createGraph(d,l) {
         const dropdownDiv = document.createElement("div");
         dropdownDiv.className = "dropdown";
         dropdownDiv.innerHTML = `
-            <button id="dropdownButton${i}" class="dropbtn" ${i > 0 ? 'disabled' : ''}>Step ${i+1}</button>
+            <button id="dropdownButton${i}" class="dropbtn" ${i > 0 ? 'disabled' : ''}>Arrow ${i+1}</button>
             <div id="dropdown-content${i}" class="dropdown-content"></div>
         `;
         container.appendChild(dropdownDiv);
@@ -304,6 +304,12 @@ function selectChoice(buttonIndex, edge, nodeMap) {
     const button = document.querySelector(`#dropdownButton${buttonIndex}`);
     button.innerHTML = `\\(${nodeMap[edge.from]} \\overset{${edge.label}}{\\longrightarrow} ${nodeMap[edge.to]}\\)`;
     
+    // Disable all previous buttons
+    for (let i = 0; i < buttonIndex; i++) {
+        const prevButton = document.querySelector(`#dropdownButton${i}`);
+        prevButton.disabled = true;
+    }
+    
     // Enable next button if it exists
     const nextButton = document.querySelector(`#dropdownButton${buttonIndex + 1}`);
     if (nextButton) {
@@ -320,15 +326,23 @@ function selectChoice(buttonIndex, edge, nodeMap) {
     }
 }
 
+// Add reset functionality
+function resetDropdowns() {
+    const p = parseInt(document.getElementById("constructTaudPair_p").value, 10);
+    createSequentialDropdowns(p); // Recreate dropdowns
+    updateDropdownChoices(graph, 0); // Reset first dropdown choices
+}
+
 
   
 // Generate graph and populate dropdown
 function generateGraph() {
-    const l = 3; // Example value
-    const d = 2; // Example value
-    const p = 4; // Example value
-    graph = createGraph(d,l);
-    populateDropdownOdd(graph);
+    const l = 3; // Initial value
+    const d = 2; // Initial value
+    const p = 4; // Initial value
+    graph = createGraph(d, l);
+    createSequentialDropdowns(p);
+    updateDropdownChoices(graph, 0); // Initialize first dropdown
 }
 
 // Modify the existing updateGraphDropdown function:
