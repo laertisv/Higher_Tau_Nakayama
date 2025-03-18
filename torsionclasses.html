@@ -11,7 +11,7 @@
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 <!-- Include testTorsion.js -->
-<script src="testTorsion.js"></script>
+<script src="./js/torsion/generateTorsion.js"></script>
 
 <style>
     #displayDivForARQuiver {
@@ -51,6 +51,22 @@
 .pdf{
   width: 100%;
   aspect-ratio: 4/3;
+}
+
+.dropbtn[disabled] {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+#sequential-dropdowns {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
 }
   </style>
     
@@ -194,13 +210,9 @@
   
           <h4>Choose a path in the graph \(G(\mathcal{C}\)):</h4>
           <!-- Dropdown Container -->
-
-          <div class="dropdown">
-            <button id="dropdownButton" class="dropbtn">Arrow 1</button>
-            <div id="dropdown-content" class="dropdown-content">
-                <!-- Options will be inserted dynamically -->
-            </div>
-        </div>
+          <div id="sequential-dropdowns">
+              <!-- Dropdowns will be inserted dynamically -->
+          </div>
 </div>
 
 
