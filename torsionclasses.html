@@ -93,6 +93,10 @@
     min-width: 200px; /* Minimum width before wrapping */
     margin-bottom: 10px;
 }
+
+.torsionclass {
+        background-color: #90EE90 !important; /* Light green */
+}
   </style>
     
     <script>
@@ -205,7 +209,7 @@
               <span class="slider"></span>  
             </label> 
   
-            <button type="button" class="updateButton" onclick="updateGraphDropdown()"> Update</button><br>
+            <button type="button" class="updateButton" onclick="updateAll()"> Update</button><br>
             <span id="ErrorMessageConstructMenu" ></span><br>
             <button type="button" hidden id="resetConfirmation">Proceed</button>
             <button type="button" hidden id="resetCancel">Cancel</button>
@@ -217,6 +221,8 @@
             <!-- Dropdowns will be inserted dynamically -->
         </div>
         <button type="button" class="updateButton" onclick="resetDropdowns()">Reset Arrows</button>
+        <button type="button" class="updateButton" onclick="addInitialModule()">Add M(1,1)</button>
+
 </div>
 <div id="displayDivForARQuiver"></div>
 
@@ -224,6 +230,17 @@
 
 
 
+
+
+
+<div class="references">
+  <h2>References</h2>
+  <ul>
+    <li author-shorthand="RV24">
+      Endre S. Rundsveen and Laertis Vaso. <cite>\(\tau_d\)-tilting theory for Nakayama algebras</cite>, arXiv preprint <a href="https://arxiv.org/abs/2410.19505">arXiv:2410.19505</a> (2024).
+    </li>
+  </ul>
+</div>
 
 
 
@@ -259,7 +276,6 @@ Here is where we work. The idea is to
     1b) Find a way to add the next arrows and nodes as well. Make it so that nodes appear immutable. 
 2) add the AR-quiver as in Endre's document.
 3) Make a button that gives me the modules and then they become yellow or whatever.
-4) Display under the chosen d-torsion class two things: the corresponding path, and also the corresponding maximal td-rigid pairs
-with the notation of Endre
+4) Display under the chosen d-torsion class two things: the corresponding path, and also the corresponding maximal td-rigid pairs with the notation of Endre
 5) Add another button below that tells you that you can input a module and obtain the d-torsion class.
 -->

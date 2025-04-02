@@ -1,3 +1,5 @@
+let selectedPath = []; // Store the sequence of selected edges
+
 function createGraph(d,l) {
     const graph = {
       nodes: [],
@@ -300,6 +302,9 @@ function updateDropdownChoices(graph, buttonIndex, currentNode = null) {
 }
 
 function selectChoice(buttonIndex, edge, nodeMap) {
+    // Store the selected edge
+    selectedPath[buttonIndex] = edge;
+
     // Update current button text
     const button = document.querySelector(`#dropdownButton${buttonIndex}`);
     button.innerHTML = `\\(${nodeMap[edge.from]} \\overset{${edge.label}}{\\longrightarrow} ${nodeMap[edge.to]}\\)`;
@@ -328,9 +333,10 @@ function selectChoice(buttonIndex, edge, nodeMap) {
 
 // Add reset functionality
 function resetDropdowns() {
+    selectedPath = []; // Clear the stored path
     const p = parseInt(document.getElementById("constructTaudPair_p").value, 10);
-    createSequentialDropdowns(p); // Recreate dropdowns
-    updateDropdownChoices(graph, 0); // Reset first dropdown choices
+    createSequentialDropdowns(p);
+    updateDropdownChoices(graph, 0);
 }
 
 
@@ -570,4 +576,254 @@ function drawARquiver(d,p,l,containerId){
             tapOnBackground();
         } 
       });   
+}
+
+function updateARquiverOnInput(){
+    let a = document.forms["menuConstructTaudPairForm"];
+    let d_input = Number(a["constructTaudPair_d"].value);
+    let p_input = Number(a["constructTaudPair_p"].value);
+    let l_input = Number(a["constructTaudPair_l"].value);
+    let errBox = document.getElementById("ErrorMessageConstructMenu");
+    if (( l_input > 2) && ((p_input%2 == 1) || (d_input%2 == 1))){
+        errBox.innerHTML = "For Loewy length larger than 2, both d and p need to be even numbers!";
+    } else {
+        errBox.innerHTML = "This action will delete the current selection. Proceed anyway?";
+        let continueButton = document.getElementById("resetConfirmation");
+        let cancelButton = document.getElementById("resetCancel");
+        continueButton.hidden = false;
+        cancelButton.hidden = false;
+        continueButton.onclick = function(){ resetGraph(d_input,p_input,l_input,true); };
+        cancelButton.onclick = function(){ resetGraph(d_input,p_input,l_input,false);};
+    }
+}
+
+// Add this new combined update function
+function updateAll() {
+    let d_input = parseInt(document.getElementById("constructTaudPair_d").value, 10);
+    let l_input = parseInt(document.getElementById("constructTaudPair_l").value, 10); 
+    let p_input = parseInt(document.getElementById("constructTaudPair_p").value, 10);
+    
+    // Update the graph dropdown
+    graph = createGraph(d_input, l_input);
+    createSequentialDropdowns(p_input);
+    updateDropdownChoices(graph, 0);
+    
+    // Update the AR quiver
+    drawARquiver(d_input, p_input, l_input, "displayDivForARQuiver");
+}
+
+function calculateBase(nodeIndex, d, l) {
+    if (nodeIndex % 2 === 1) { // odd index
+        return (nodeIndex - 1) * ((d - 1) / 2) * l + nodeIndex;
+    } else { // even index
+        return (nodeIndex - 1) * (((d - 1) / 2) * l + 1) + l / 2;
+    }
+}
+
+function processNode(nodeName, nodeIndex, d, l) {
+    const base = calculateBase(nodeIndex, d, l);
+
+    const modules = [];
+
+    if (nodeName === 'DEmpty') {
+        return []; // Don't add any modules
+    }
+    
+    if (nodeName === 'DFull') {
+        return [`M-${base}-${base}`];
+    }
+
+    if (nodeIndex % 2 === 1) { // Odd index
+        if (nodeName === 'DOddOne') {
+            return [`M-${base}-${base}`];
+        }
+        if (nodeName === 'DOddFull') {
+            for (let i = 0; i < l-1; i++)
+            {
+                modules.push(`M-${base}-${base+i}`);
+            }
+            return modules;
+        }
+        const match = nodeName.match(/^DOdd(\d+)$/);
+        if (match) {
+            const h = parseInt(match[1]);
+            for (let i = h-1; i < l-1; i++)
+                {
+                    modules.push(`M-${base}-${base+i}`);
+                }
+                return modules;
+        }
+    } else { // Even index
+        if (nodeName === 'DEvenFull') {
+            for (let i = 0; i < l-1; i++)
+            {
+                modules.push(`M-${base-i}-${base}`);
+            }
+            return modules;
+        }
+        const match = nodeName.match(/^DEven(\d+)$/);
+        if (match) {
+            const h = parseInt(match[1]);
+            for (let i = 0; i < h; i++)
+            {
+                modules.push(`M-${base-i}-${base}`);
+            }
+            return modules;
+        }
+    }
+    
+    return [];
+}
+
+function processEdge(edge, position, d, l) {
+    const modules = [];
+    const name = edge.shortName;
+    const startingBase = calculateBase(position, d, l);
+    const endingBase = calculateBase(position + 1, d, l);
+
+    // Special case for l=2
+    if (l === 2) {
+        const maxNumber = d;
+        if (name === 'e') {
+            for (let j = 0; j < maxNumber; j++) {
+                modules.push(`M-${startingBase + j}-${startingBase + (l - 1) + j}`);
+            }
+            return modules;
+        }
+        const matchD = name.match(/^d(\d+)$/);
+        if (matchD) {
+            const h = parseInt(matchD[1]);
+            for (let j = 0; j < h; j++) {
+                modules.push(`M-${endingBase - (l - 1) - j}-${endingBase - j}`);
+            }
+            return modules;
+        }
+        return [];
+    }
+
+    if (position % 2 === 1) {
+        const maxNumber = Math.floor(((d - 2) / 2) * l + 2);
+        
+        const matchE = name.match(/^e(\d+)$/);
+        if (matchE) {
+            for (let j = 0; j < maxNumber; j++) {
+                modules.push(`M-${startingBase + j}-${startingBase + (l - 1) + j}`);
+            }
+            return modules;
+        }
+        
+        if (name === 'i') {
+            for (let j = 0; j < maxNumber; j++) {
+                modules.push(`M-${startingBase + j}-${startingBase + (l - 1) + j}`);
+            }
+            return modules;
+        }
+        
+        const matchB = name.match(/^b(\d+)$/);
+        if (matchB) {
+            const h = parseInt(matchB[1]);
+            for (let j = 0; j < h; j++) {
+                modules.push(`M-${endingBase - (l - 1) - j}-${endingBase - j}`);
+            }
+            return modules;
+        }
+    } else {
+        const maxNumber = Math.floor((d / 2) * l);
+        
+        if (name === 'i-') {
+            for (let j = 0; j < maxNumber; j++) {
+                modules.push(`M-${startingBase - (l - 1) + 1 + j}-${startingBase + 1 + j}`);
+            }
+            return modules;
+        }
+        
+        const matchK = name.match(/^k(\d+)$/);
+        if (matchK) {
+            const h = parseInt(matchK[1]);
+            for (let j = 0; j < h; j++) {
+                modules.push(`M-${endingBase - 1 - j}-${endingBase - 1 + (l - 1) - j}`);
+            }
+            return modules;
+        }
+        
+        const matchZ = name.match(/^z(\d+)(\d+)$/);
+        if (matchZ) {
+            const h = parseInt(matchZ[1]);
+            const k = parseInt(matchZ[2]);
+            if (h >= 2 && k <= l - h) {
+                for (let j = 0; j < k; j++) {
+                    modules.push(`M-${endingBase - 1 - j}-${endingBase - 1 + (l - 1) - j}`);
+                }
+                return modules;
+            }
+        }
+        
+        const matchL = name.match(/^l(\d+)(\d+)$/);
+        if (matchL) {
+            const h = parseInt(matchL[1]);
+            const k = parseInt(matchL[2]);
+            if (h >= 1 && h < l - 1 && k < l - h) {
+                for (let j = 0; j < k; j++) {
+                    modules.push(`M-${endingBase - 1 - j}-${endingBase - 1 + (l - 1) - j}`);
+                }
+                return modules;
+            }
+        }
+        
+        if (d === 2) {
+            const matchM = name.match(/^m(\d+)(\d+)(\d+)$/);
+            if (matchM) {
+                const h = parseInt(matchM[1]);
+                const m = parseInt(matchM[2]);
+                const k = parseInt(matchM[3]);
+                if (h >= 1 && h < l - 2 && k >= 2 && k < l - h && m < l - (h + k)) {
+                    for (let j = 0; j < m; j++) {
+                        modules.push(`M-${endingBase - 1 - j}-${endingBase - 1 + (l - 1) - j}`);
+                    }
+                    return modules;
+                }
+            }
+        }
+    }
+    
+    return modules;
+}
+
+// Add new function to process the selected path
+function addInitialModule() {
+    if (selectedPath.length === 0) {
+        console.log("Please select a path first");
+        return;
+    }
+    
+    const d = parseInt(document.getElementById("constructTaudPair_d").value);
+    const l = parseInt(document.getElementById("constructTaudPair_l").value);
+    
+
+   // Process each node in the path
+   selectedPath.forEach((edge, index) => {
+    const nodeModules = processNode(edge.from, index + 1, d, l);
+    const edgeModules = processEdge(edge, index + 1, d, l);
+    torsionModules = [...torsionModules, ...nodeModules, ...edgeModules];
+});
+
+// Add the last node in the path
+const lastEdge = selectedPath[selectedPath.length - 1];
+const lastNodeModules = processNode(lastEdge.to, selectedPath.length + 1, d, l);
+torsionModules = [...torsionModules, ...lastNodeModules];
+    
+    
+    // Update the display
+    addTorsionClass();
+}
+
+function addTorsionClass() {
+    cy.nodes().removeClass("torsion");
+    cy.nodes().addClass("notchosen");
+    
+    for (let i in torsionModules) {
+        let M = cy.filter('node[id=' + '"' + torsionModules[i] + '"' + ']');
+        M.addClass("torsion");
+        M.removeClass('notchosen');
+    }
 }

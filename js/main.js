@@ -16,6 +16,7 @@ let chosenRigid = [];
 let chosenSupport = [];
 let notAllowedRigid = [];
 let notAllowedSupport = [];
+let torsionModules = [];
 
 /* Styling of graph */
 var init_style = [
@@ -103,6 +104,12 @@ var init_style = [
         selector: '.support',
         style: {
             'background-color': 'cornflowerblue',
+        }
+    },
+    {
+        selector: '.torsion',
+        style: {
+            'background-color': 'forestgreen',
         }
     },
     {
