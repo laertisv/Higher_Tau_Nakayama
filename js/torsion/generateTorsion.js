@@ -334,9 +334,21 @@ function selectChoice(buttonIndex, edge, nodeMap) {
 // Add reset functionality
 function resetDropdowns() {
     selectedPath = []; // Clear the stored path
+
+    // Reset dropdowns
     const p = parseInt(document.getElementById("constructTaudPair_p").value, 10);
     createSequentialDropdowns(p);
     updateDropdownChoices(graph, 0);
+
+    // Clear torsion class display
+    cy.nodes().removeClass("torsion");
+    cy.nodes().addClass("notchosen");
+    
+    // Clear path description
+    const textDiv = document.getElementById('torsionClassDescription');
+    const pathDiv = document.getElementById('thePath');
+    if (textDiv) textDiv.innerHTML = '';
+    if (pathDiv) pathDiv.innerHTML = '';
 }
 
 
@@ -790,7 +802,7 @@ function processEdge(edge, position, d, l) {
 }
 
 // Add new function to process the selected path
-function addInitialModule() {
+function updateTorsionClass() {
     if (selectedPath.length === 0) {
         console.log("Please select a path first");
         return;
@@ -815,6 +827,39 @@ torsionModules = [...torsionModules, ...lastNodeModules];
     
     // Update the display
     addTorsionClass();
+
+    // Create nodeMap to map shortNames to labels
+    const nodeMap = graph.nodes.reduce((map, node) => {
+        map[node.shortName] = node.label;
+        return map;
+    }, {});
+    
+    // Create path description with proper LaTeX notation
+    let pathText = `\\text{This is the }${d}\\text{-torsion class corresponding to the path:}`;
+    let pathDescription = '';
+    
+    // Add first node
+    if (selectedPath.length > 0) {
+        pathDescription += nodeMap[selectedPath[0].from];
+    }
+    
+    // Add arrows and subsequent nodes
+    selectedPath.forEach((edge, index) => {
+        pathDescription += ` \\xrightarrow{${edge.label}} ${nodeMap[edge.to]}`;
+    });
+    
+    pathDescription += "."; // Add fullstop
+
+    // Update the description divs
+    const textDiv = document.getElementById('torsionClassDescription');
+    const pathDiv = document.getElementById('thePath');
+    textDiv.innerHTML = `\\(${pathText}\\)`;
+    pathDiv.innerHTML = `\\[${pathDescription}\\]`; // Using display math mode for better centering
+    
+    // Render math
+    if (MathJax.typesetPromise) {
+        MathJax.typesetPromise();
+    }
 }
 
 function addTorsionClass() {

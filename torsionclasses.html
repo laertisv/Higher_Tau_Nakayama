@@ -87,12 +87,30 @@
     width: 100%;
 }
 
+.button-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
 .dropdown {
     position: relative;
     flex: 1;
     min-width: 200px; /* Minimum width before wrapping */
     margin-bottom: 10px;
 }
+
+#torsionClassDescription {
+        width: 100%;
+        text-align: center;
+        margin: 10px 0;
+    }
+
+    #thePath {
+        width: 100%;
+        text-align: center;
+        margin: 10px 0;
+    }
 
 .torsionclass {
         background-color: #90EE90 !important; /* Light green */
@@ -178,10 +196,10 @@
     <h2>\(d\)-torsion classes <span style="color:gray;cursor: pointer;" onclick="toggleSection(this,'textMutation1')">&#9207</span></h2>
     <div id="textdtorsionclasses">
       <p>
-        Higher torsion classes where introduced in [Jør16] and they were further studied in [AJST22] and [AHJKPT24]. They are certain subcategories of \(d\)-cluster tilting subcategories defined in such a way that the case \(d=1\) recovers the classic notion of torsion classes.
+        Higher torsion classes where introduced in [Jør16] and they were further studied in [AJST22] and [AHJ+24]. They are certain subcategories of \(d\)-cluster tilting subcategories defined in such a way that the case \(d=1\) recovers the classic notion of torsion classes.
       </p>
       <p>
-        The paper [RV24] gives a combinatorial classification of \(d\)-torsion classes for algebras of the form \(\Lambda(n,l)\). Based on the work [AHJKPT25+], we obtain that each of those torsion classes gives rise to a summand-maximal \(\tau_d\)-rigid pair, that is a \(\tau_d\)-rigid pair with \(n\) non-isomorphic direct summands. This map is injective but not surjective. However, this map has a partial inverse obtained by sending a summand-maximal \(\tau_d\)-rigid pair to the smallest torsion class which contains it. 
+        The paper [RV24] gives a combinatorial classification of \(d\)-torsion classes for algebras of the form \(\Lambda(n,l)\). Based on the work [AHJ+25], we obtain that each of those torsion classes gives rise to a summand-maximal \(\tau_d\)-rigid pair, that is a \(\tau_d\)-rigid pair with \(n\) non-isomorphic direct summands. This map is injective but not surjective. However, this map has a partial inverse obtained by sending a summand-maximal \(\tau_d\)-rigid pair to the smallest torsion class which contains it. 
       </p>
       
       <h2>Finding \(d\)-torsion classes</h2>
@@ -220,13 +238,14 @@
         <div id="sequential-dropdowns">
             <!-- Dropdowns will be inserted dynamically -->
         </div>
-        <button type="button" class="updateButton" onclick="resetDropdowns()">Reset Arrows</button>
-        <button type="button" class="updateButton" onclick="addInitialModule()">Add M(1,1)</button>
-
+        <div class="button-container">
+          <button type="button" class="updateButton" onclick="resetDropdowns()">Reset Arrows</button>
+          <button type="button" class="updateButton" onclick="updateTorsionClass()">Create d-torsion class</button>
+        </div>
 </div>
 <div id="displayDivForARQuiver"></div>
-
-
+<div class="runningText" id="torsionClassDescription"></div>
+  <div id="thePath"></div>
 
 
 
@@ -236,6 +255,21 @@
 <div class="references">
   <h2>References</h2>
   <ul>
+    <li author-shorthand="AHJ+24">
+      Jenny August, Johanne Haugland, Karin M Jacobsen, Sondre Kvamme, Yann Palu, and Hipolito Treffinger. <cite>A characterisation of higher torsion classes</cite>, Forum of Mathematics, Sigma <span style="font-weight: bold;">13</span> (2024), e33, <a href="https://doi.org/10.1017/fms.2024.73"> 10.1017/fms.2024.73</a>.
+    </li>
+    <li author-shorthand="AHJ+25">
+      Jenny August, Johanne Haugland, Karin M Jacobsen, Sondre Kvamme, Yann Palu,
+and Hipolito Treffinger. <cite>Higher torsion classes, \(\tau_d\)-tilting theory, and silting complexes</cite>,
+In preparation (2025+).
+    </li>
+    <li author-shorthand="AJST22">
+      Javad Asadollahi, Peter Jørgensen, Sibylle Schroll, and Hipolito Treffinger. <cite> On higher torsion
+        classes</cite>, Nagoya Math. J. <span style="font-weight: bold;">248</span> (2022), 823–848,<a href="https://doi.org/10.1017/nmj.2022.8"> 10.1017/nmj.2022.8</a>.
+    </li>
+      <li author-shorthand="Jør16">
+        Peter Jørgensen. <cite>Torsion classes and t-structures in higher homological algebra</cite>, Int. Math. Res. Not. IMRN <span style="font-weight: bold;">13</span> (2016), 3880–3905, <a href="https://doi.org/10.1093/imrn/rnv265">doi.org/10.1093/imrn/rnv265</a>.
+      </li>
     <li author-shorthand="RV24">
       Endre S. Rundsveen and Laertis Vaso. <cite>\(\tau_d\)-tilting theory for Nakayama algebras</cite>, arXiv preprint <a href="https://arxiv.org/abs/2410.19505">arXiv:2410.19505</a> (2024).
     </li>
@@ -270,12 +304,6 @@ window.onload = function() {
 
 <!--
 Here is where we work. The idea is to 
-1) create the dropdown boxes
-    1a) look at css here https://www.w3schools.com/howto/howto_js_dropdown.asp#:~:text=Use%20any%20element%20to%20open,dropdown%20menu%20correctly%20with%20CSS.
-    for how to style it properly.
-    1b) Find a way to add the next arrows and nodes as well. Make it so that nodes appear immutable. 
-2) add the AR-quiver as in Endre's document.
-3) Make a button that gives me the modules and then they become yellow or whatever.
 4) Display under the chosen d-torsion class two things: the corresponding path, and also the corresponding maximal td-rigid pairs with the notation of Endre
 5) Add another button below that tells you that you can input a module and obtain the d-torsion class.
 -->
