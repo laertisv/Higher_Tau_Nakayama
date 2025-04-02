@@ -11,6 +11,8 @@
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 <!-- Include testTorsion.js -->
+<script src="./js/mutation/generateAndMutate.js"></script>
+<script src="./js/main.js"></script>
 <script src="./js/torsion/generateTorsion.js"></script>
 
 <style>
@@ -203,33 +205,36 @@
     </p>
 </div>
 <div id="menuChooseAlgebra">
-    <h4>Choose an algebra</h4>
-          <form name="menuConstructTaudPairForm" action="">
-              <label for="constructTaudPair_d">\(d=\)</label>
-              <input type="number" required min="2" max="6" id="constructTaudPair_d" value="2" onkeypress="return isNumberKey(event)">
-              <label for="constructTaudPair_l">\(l=\)</label>
-              <input type="number" required min="2" max="8" id="constructTaudPair_l" value="3" onkeypress="return isNumberKey(event)">
-              <label for="constructTaudPair_p">\(p=\)</label>
-              <input type="number" required min="2" max="8" id="constructTaudPair_p" value="4" onkeypress="return isNumberKey(event)"><br>
-              <label class="switch">
-                <span class="labelSwitch">View morphisms</span>
-                <input type="checkbox" checked="false" name="edgeShow" onchange="showEdges=this.checked;cy.filter('edge').toggleClass('noShow') " autocomplete="off">
-                <span class="slider"></span>  
-              </label> 
+  <h4>Choose an algebra</h4>
+        <form name="menuConstructTaudPairForm" action="">
+            <label for="constructTaudPair_d">\(d=\)</label>
+            <input type="number" required min="2" max="6" id="constructTaudPair_d" value="2" onkeypress="return isNumberKey(event)">
+            <label for="constructTaudPair_l">\(l=\)</label>
+            <input type="number" required min="2" max="8" id="constructTaudPair_l" value="3" onkeypress="return isNumberKey(event)">
+            <label for="constructTaudPair_p">\(p=\)</label>
+            <input type="number" required min="2" max="8" id="constructTaudPair_p" value="4" onkeypress="return isNumberKey(event)"><br>
+            <label class="switch">
+              <span class="labelSwitch">View morphisms</span>
+              <input type="checkbox" checked="false" name="edgeShow" onchange="showEdges=this.checked;cy.filter('edge').toggleClass('noShow') " autocomplete="off">
+              <span class="slider"></span>  
+            </label> 
   
-              <button type="button" class="updateButton" onclick="updateGraphDropdown()"> Update</button><br>
-              <span id="ErrorMessageConstructMenu" ></span><br>
-              <button type="button" hidden id="resetConfirmation">Proceed</button>
-              <button type="button" hidden id="resetCancel">Cancel</button>
-          </form>
+            <button type="button" class="updateButton" onclick="updateGraphDropdown()"> Update</button><br>
+            <span id="ErrorMessageConstructMenu" ></span><br>
+            <button type="button" hidden id="resetConfirmation">Proceed</button>
+            <button type="button" hidden id="resetCancel">Cancel</button>
+        </form>
   
-          <h4>Choose a path in the graph \(G(\mathcal{C}\)):</h4>
-          <!-- Dropdown Container -->
-          <div id="sequential-dropdowns">
-              <!-- Dropdowns will be inserted dynamically -->
-          </div>
-          <button type="button" class="updateButton" onclick="resetDropdowns()">Reset Arrows</button>
+        <h4>Choose a path in the graph \(G(\mathcal{C}\)):</h4>
+        <!-- Dropdown Container -->
+        <div id="sequential-dropdowns">
+            <!-- Dropdowns will be inserted dynamically -->
+        </div>
+        <button type="button" class="updateButton" onclick="resetDropdowns()">Reset Arrows</button>
 </div>
+<div id="displayDivForARQuiver"></div>
+
+
 
 
 
@@ -249,6 +254,7 @@ window.onload = function() {
 </script>
 
 <script>
+    drawARquiver(2,4,3,"displayDivForARQuiver");
     let modDate = new Date(document.lastModified);
     var options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute:'numeric', hour12:false, timeZoneName: 'short' };
     document.getElementById("showUpdated").innerHTML = modDate.toLocaleDateString("en-US", options);

@@ -540,3 +540,34 @@ document.addEventListener("click", function(event) {
         }
     }
 });
+
+
+function drawARquiver(d,p,l,containerId){
+    currentAlgebra = new generateModuleCategory(d,p,l);
+    let elmts = {
+      nodes : currentAlgebra.modules,
+      edges : currentAlgebra.edges
+    };
+    cy = cytoscape({
+        container: document.getElementById(containerId),
+        elements: elmts , 
+        layout: {
+            name:'preset'
+        },
+        autolock: true,
+        selectionType: 'single',
+        style: init_style,
+        boxSelectionEnabled: false,
+        });
+    cy.on('select', 'node, edge', e => cy.elements().not(e.target).unselect()); /* Deselect previous selected element, even when shift is pressed. */
+    cy.on('select','node', e => selectedSummand(e));
+    cy.on('tap', function(event){
+        // target holds a reference to the originator
+        // of the event (core or element)
+        var evtTarget = event.target;
+      
+        if( evtTarget === cy ){
+            tapOnBackground();
+        } 
+      });   
+}
