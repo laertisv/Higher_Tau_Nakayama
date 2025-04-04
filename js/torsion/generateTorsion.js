@@ -343,6 +343,7 @@ function resetDropdowns() {
     // Clear torsion class display
     cy.nodes().removeClass("torsion");
     cy.nodes().addClass("notchosen");
+    torsionModules = [];
     
     // Clear path description
     const textDiv = document.getElementById('torsionClassDescription');
