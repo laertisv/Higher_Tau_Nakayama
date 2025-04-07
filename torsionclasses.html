@@ -70,14 +70,19 @@
 
 .dropbtn {
     width: 100%;
-    max-width: 300px; /* Optional: limit maximum width */
+    max-width: 200px; /* Optional: limit maximum width */
 }
 
 .dropbtn[disabled] {
-    cursor: not-allowed;
-    pointer-events: none;
     box-shadow: none;
     opacity: 0.9; /* Just slightly dimmed */
+    background-color: transparent;
+    color: #04AA6D;
+    border: #04AA6D 1px solid;
+}
+.dropbtn[disabled]:hover {
+  cursor:not-allowed !important;
+  background-color: transparent;
 }
 
 .dropbtn:not([disabled]):hover {
