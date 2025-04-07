@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Nakayama d-torsion classes</title>
+
+    <link rel="stylesheet" href="stylesheet.css">
+    <script src="./cytoscape-and-extensions/cytoscape.min.js"></script>
+
+<!-- MathJax -->
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<!-- Include testTorsion.js -->
+<script src="./js/mutation/generateAndMutate.js"></script>
+<script src="./js/main.js"></script>
+<script src="./js/torsion/generateTorsion.js"></script>
+
+<style>
+    #displayDivForARQuiver {
+        width: 100%;
+        height: 300px !important;
+        position: relative;
+        border:1px solid black;
+        display: block;
+        float:left;    
+    }
+    .runningText, #menuChooseAlgebra, #menuMutate{
+    width: 650px;
+    margin:auto;
+    overflow: auto;
+    }
+
+
+#MutateFromSupport {
+    background-color: rgba(100,149,237,0.7);
+}
+#MutateFromRigid {
+    background-color: rgba(178,34,34,0.7);
+}
+#MutateFromSupport:hover {
+    background-color: rgba(100,149,237,0.5);
+}
+#MutateFromRigid:hover {
+    background-color: rgba(178,34,34,0.5);
+}
+#MutateFromSupport:active {
+    background-color: rgba(100,149,237,1);
+}
+#MutateFromRigid:active {
+    background-color: rgba(178,34,34,1);
+}
+
+.pdf{
+  width: 100%;
+  aspect-ratio: 4/3;
+}
+
+/* Remove the second .dropbtn style block and keep only this one */
+.dropbtn {
+    background-color: #04AA6D;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    pointer-events: all;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
+}
+
+.dropbtn {
+    width: 100%;
+    max-width: 300px; /* Optional: limit maximum width */
+}
+
+.dropbtn[disabled] {
+    cursor: not-allowed;
+    pointer-events: none;
+    box-shadow: none;
+    opacity: 0.9; /* Just slightly dimmed */
+}
+
+.dropbtn:not([disabled]):hover {
+    background-color: #3e8e41;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+#sequential-dropdowns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    width: 100%;
+    justify-items: center;
+    align-items: start;
+}
+
+.button-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.dropdown {
+    width: 100%;
+    min-width: 200px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+#torsionClassDescription {
+        width: 100%;
+        text-align: center;
+        margin: 10px 0;
+    }
+
+    #thePath {
+        width: 100%;
+        text-align: center;
+        margin: 10px 0;
+    }
+
+.torsionclass {
+        background-color: #90EE90 !important; /* Light green */
+}
+  </style>
+    
+    <script>
+      /* Ensure number input in menu field */
+      function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : evt.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57)){
+          return false;
+        }
+        return true;
+        }
+
+        /* Toggle sections */
+      function toggleSection(btnCall,idTag) {
+        let elmt = document.getElementById(idTag);
+        if (elmt.style.display === "none") {
+          elmt.style.display = "block";
+          btnCall.innerHTML = "&#9207";
+        } else {
+          elmt.style.display = "none";
+          btnCall.innerHTML = "&#9205"
+        }
+      }
+    </script>
+    
+
+<style>
+
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #3e8e41;
+}
+
+.dropdown {
+  float: none;
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: relative;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  right: 0;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown a:hover {background-color: #ddd;}
+
+.show {display: block;}
+</style>
+</head>
+<body>
+  <div class="runningText">
+    <h1>\(d\)-torsion classes</h1>
+    <p id="lastUpdate">Last updated: <span id="showUpdated"></span></p>
+    <p><a href="./index.html">Home</a> | <a href="./construct.html">\(\tau_d\)-rigid pairs</a> | <a href="./mutationgraph.html">Mutation</a> | <a href="./torsionclasses.html">\(d\)-torsion classes</a></p>
+    <p>This is a supplement to the paper <cite>\(\tau_d\)-tilting theory for Nakayama algebras</cite> [RV24].</p>
+    
+    <h2>Preliminary <span style="color:gray;cursor: pointer;" onclick="toggleSection(this,'textPreliminary')">&#9207</span></h2>
+    <div id="textPreliminary">
+      <p>
+        We are working with linear Nakayama algebras with homogeneous relations, admitting a \(d\)-cluster tilting subcategory \(\mathcal{C}\). Specifically, for an algebraically closed field \(\mathbf{k}\), we are working with the algebras \(\Lambda(n,l)=\mathbf{k}\mathbb{A}_n/R^l\), where \(R\) is the arrow ideal of the quiver \(\mathbb{A}_n\) given by $$ n\longrightarrow n-1 \longrightarrow \cdots \longrightarrow 2 \longrightarrow 1 .$$ The indecomposable modules of \(\operatorname{mod}\Lambda\) are uniquely given through their support on \(\mathbb{A}_n\), which can be described as subintervals of \([1,n]\). Hence, they will be denoted by \(M(a,b)\), where \([a,b]\) is their support-interval.
+      </p>
+      <p>
+        For some more preliminary information on the \(d\)-cluster tilting subcategory of \(\Lambda(n,l)\) and the possibility of constructing your own \(\tau_d\)-rigid pair, visit <a href="./construct.html">here.</a> 
+      </p>
+    </div>
+    
+    <h2>\(d\)-torsion classes <span style="color:gray;cursor: pointer;" onclick="toggleSection(this,'textMutation1')">&#9207</span></h2>
+    <div id="textdtorsionclasses">
+      <p>
+        Higher torsion classes where introduced in [Jør16] and they were further studied in [AJST22] and [AHJ+24]. They are certain subcategories of \(d\)-cluster tilting subcategories defined in such a way that the case \(d=1\) recovers the classic notion of torsion classes.
+      </p>
+      <p>
+        The paper [RV24] gives a combinatorial classification of \(d\)-torsion classes for algebras of the form \(\Lambda(n,l)\). Our description is given as a bijection to directed paths in a the graph \(G(\mathcal{C})\). In general, the graph has the following form: 
+      </p>
+      <img src="resources/graph1.png" alt="Paths in this graph give d-torsion classes" class="commutativeDiagram" width="500px">
+      <p>
+        Consider a directed path of length \(p-1\) in this graph, which also starts at a vertex with subscript \(2t+1\). For each of the nodes traversed by such a path, we can assign a collection of modules in the "diagonals" of the \(d\)-cluster tilting subcategory in a certain way. Similarly, for each arrow we can define a certain collection of projective-injective modules lying between those diagonals. It turns out that such an assignment defines a \(d\)-torsion class in a unique way and that all \(d\)-torsion classes can be obtained as such. For details on how the aforementioned assignments are made we refer to [RV24], but keep reading for an interactive way to compute \(d\)-torsion classes using paths.
+      </p>
+
+      <p>
+        Alas, life would be too easy if this was the complete picture. Indeed, in the case where \(d=2\), we have to include these additional arrows to \(G(\mathcal{C})\):
+      </p>
+      <img src="resources/graph2.png" alt="Don't forget these arrows if d=2!" class="commutativeDiagram" width="400px">
+
+      <p>
+        On the other hand, if you are lucky enough to care only for the case \(l=2\), then the above graph simplifies to the following:
+      </p>
+      <img src="resources/graph3.png" alt="Life is easy when l=2!" class="commutativeDiagram" width="400px">
+
+      <h2>Finding \(d\)-torsion classes</h2>
+      <p>
+        Below you can generate an algebra \(\Lambda(n,l)\) which admit a \(d\)-cluster tilting subcategory, by choosing \(d\), \(p\) and \(l\) appropriately. The module category will be represented as it's AR-quiver where each vertex is an indecomposable. The darker vertices are indecomposables in the \(d\)-cluster tilting subcategory. Notice how they form some nice consecutive diagonals.
+      </p>
+      <p>
+        After you choose your parameters \(d\), \(p\) and \(l\), you can construct a path in the graph \(G(\mathcal{C})\). You can see the general form of the graph above if you want to see your choices, or you can just select the arrows one after another from the boxes below. Choosing an arrow restricts the choices for the next arrow so that you always construct a well-defined directed path. After you have chosen all arrows, you can press the "Create a \(d\)-torsion class" button which will define the \(d\)-torsion class for you. 
+      </p>
+    </div>
+  </div>
+  
+  <div id="menuChooseAlgebra">
+  <h4>Choose an algebra</h4>
+        <form name="menuConstructTaudPairForm" action="">
+            <label for="constructTaudPair_d">\(d=\)</label>
+            <input type="number" required min="2" max="6" id="constructTaudPair_d" value="2" onkeypress="return isNumberKey(event)">
+            <label for="constructTaudPair_l">\(l=\)</label>
+            <input type="number" required min="2" max="8" id="constructTaudPair_l" value="3" onkeypress="return isNumberKey(event)">
+            <label for="constructTaudPair_p">\(p=\)</label>
+            <input type="number" required min="2" max="8" id="constructTaudPair_p" value="4" onkeypress="return isNumberKey(event)"><br>
+            <label class="switch">
+              <span class="labelSwitch">View morphisms</span>
+              <input type="checkbox" checked="false" name="edgeShow" onchange="showEdges=this.checked;cy.filter('edge').toggleClass('noShow') " autocomplete="off">
+              <span class="slider"></span>  
+            </label> 
+  
+            <button type="button" class="updateButton" onclick="updateAll()"> Update</button><br>
+            <span id="ErrorMessageConstructMenu" ></span><br>
+            <button type="button" hidden id="resetConfirmation">Proceed</button>
+            <button type="button" hidden id="resetCancel">Cancel</button>
+        </form>
+  
+        <h4>Choose a path in the graph \(G(\mathcal{C}\)):</h4>
+        <!-- Dropdown Container -->
+        <div id="sequential-dropdowns">
+            <!-- Dropdowns will be inserted dynamically -->
+        </div>
+        <div class="button-container">
+          <button type="button" class="updateButton" onclick="resetDropdowns()">Reset Arrows</button>
+          <button type="button" class="updateButton" onclick="updateTorsionClass()">Create d-torsion class</button>
+        </div>
+</div>
+<div id="displayDivForARQuiver"></div>
+<div class="runningText" id="torsionClassDescription"></div>
+  <div id="thePath"></div>
+
+<div class="runningText">
+<h2>How does the bijection work?</h2>
+  <p>
+    Here is some short explanation of how the generation of \(d\)-torsion classes from paths in \(G(\mathcal{C})\) works.
+  </p>
+  <p>  
+    The nodes of the graph are named in a relatively intuitive way. As mentioned, they correspond to the modules in the diagonals. Arrows going up indicate that we start at a module in a diagonal and include all of the modules in the diagonal above it, and dually for arrows going down. No number indicates taking all modules in a diagonal and a \(0\) indicates taking none. You will probably grasp the patterns after playing with them for a while. 
+  </p>      
+<p>
+  The arrows on the other hand are named alphabetically so the letter in their name does not give much information about them (but the numbers in their name do give information). The arrows correspond to the projective-injective modules between the diagonals corresponding to their start and end node. When including such a projective-injective module in the \(d\)-torsion class, it turns out that all successive projective-modules must also be included (until the next diagonal is reached). Hence the indeces contain the information of how many projective-injective modules are included between the two diagonals. Note that not all possibilities are necessarily available, depending on the nature of the preceeding and upcoming diagonals. Sometimes there are more indeces on the arrows which contain information about their start and end node, but these are there only so that arrows can be easily distinguished. Playing a bit more with the interactive tool below should give sufficient intuition of how to compute the modules between diagonals, but for precise definitions we refer to the article [RV24].
+</p>
+</div>
+
+
+<div class="references">
+  <h2>References</h2>
+  <ul>
+    <li author-shorthand="AHJ+24">
+      Jenny August, Johanne Haugland, Karin M Jacobsen, Sondre Kvamme, Yann Palu, and Hipolito Treffinger. <cite>A characterisation of higher torsion classes</cite>, Forum of Mathematics, Sigma <span style="font-weight: bold;">13</span> (2024), e33, <a href="https://doi.org/10.1017/fms.2024.73"> 10.1017/fms.2024.73</a>, MR<a href="https://mathscinet.ams.org/mathscinet/article?mr=4860676">4860676</a>.
+    </li>
+    <li author-shorthand="AHJ+25">
+      Jenny August, Johanne Haugland, Karin M Jacobsen, Sondre Kvamme, Yann Palu,
+and Hipolito Treffinger. <cite>Higher torsion classes, \(\tau_d\)-tilting theory, and silting complexes</cite>,
+In preparation (2025+).
+    </li>
+    <li author-shorthand="AJST22">
+      Javad Asadollahi, Peter Jørgensen, Sibylle Schroll, and Hipolito Treffinger. <cite> On higher torsion
+        classes</cite>, Nagoya Math. J. <span style="font-weight: bold;">248</span> (2022), 823–848,<a href="https://doi.org/10.1017/nmj.2022.8"> 10.1017/nmj.2022.8</a>, MR<a href="https://mathscinet.ams.org/mathscinet/article?mr=4508267">4508267</a>.
+    </li>
+      <li author-shorthand="Jør16">
+        Peter Jørgensen. <cite>Torsion classes and t-structures in higher homological algebra</cite>, Int. Math. Res. Not. IMRN <span style="font-weight: bold;">13</span> (2016), 3880–3905, <a href="https://doi.org/10.1093/imrn/rnv265">doi.org/10.1093/imrn/rnv265</a>, MR<a href="https://mathscinet.ams.org/mathscinet/article?mr=3544623">3544623</a>.
+      </li>
+    <li author-shorthand="RV24">
+      Endre S. Rundsveen and Laertis Vaso. <cite>\(\tau_d\)-tilting theory for Nakayama algebras</cite>, arXiv preprint <a href="https://arxiv.org/abs/2410.19505">arXiv:2410.19505</a> (2024).
+    </li>
+  </ul>
+</div>
+
+
+
+
+
+
+<script>
+let graph;
+
+// Generate the graph and populate dropdown on page load
+window.onload = function() {
+            generateGraph();
+        };
+</script>
+
+<script>
+    drawARquiver(2,4,3,"displayDivForARQuiver");
+    let modDate = new Date(document.lastModified);
+    var options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute:'numeric', hour12:false, timeZoneName: 'short' };
+    document.getElementById("showUpdated").innerHTML = modDate.toLocaleDateString("en-US", options);
+  </script>
+
+
+</body>
+</html>
+
+
+<!--
+Add the graph and also explain that this is how we can find the torsion classes.
+
+Also reread and adapt the text.
+-->
