@@ -329,6 +329,14 @@ function selectChoice(buttonIndex, edge, nodeMap) {
     if (MathJax.typesetPromise) {
         MathJax.typesetPromise();
     }
+
+    // Add event listener to the buttons children to toggle the dropdown
+    for (let element of button.children){
+        element.addEventListener('click', function(event) {
+            event.stopPropagation(); // Prevent event bubbling
+            button.nextElementSibling.classList.toggle('show');
+        });
+    }
 }
 
 // Add reset functionality
@@ -364,184 +372,11 @@ function generateGraph() {
     updateDropdownChoices(graph, 0); // Initialize first dropdown
 }
 
-// Modify the existing updateGraphDropdown function:
-function updateGraphDropdown() {
-    let d_input = parseInt(document.getElementById("constructTaudPair_d").value, 10);
-    let l_input = parseInt(document.getElementById("constructTaudPair_l").value, 10); 
-    let p_input = parseInt(document.getElementById("constructTaudPair_p").value, 10);
-    
-    graph = createGraph(d_input, l_input);
-    createSequentialDropdowns(p_input);
-    updateDropdownChoices(graph, 0); // Initialize first dropdown
-}
 
-/**
- * Populates the dropdown with the odd and both type edges of the graph.
- * @param {Object} graph - The graph object containing nodes and edges.
- */
-function populateDropdownOdd(graph) {
-    const dropdownContent = document.getElementById("dropdown-content");
-    dropdownContent.innerHTML = ""; // Clear existing content
 
-    const nodeMap = graph.nodes.reduce((map, node) => {
-        map[node.shortName] = node.label;
-        return map;
-    }, {});
-
-    graph.edges.forEach((edge) => {
-        if (edge.type === 'odd' || edge.type === 'both') {
-            const edgeOption = document.createElement("a");
-            edgeOption.href = "#"; // No actual link, just for UI
-            edgeOption.innerHTML = `\\(${nodeMap[edge.from]} \\overset{${edge.label}}{\\longrightarrow} ${nodeMap[edge.to]}\\)`; // Use LaTeX
-            edgeOption.onclick = function(event) {
-                event.preventDefault();  // Prevent page from scrolling up
-                changeButtonText(`${nodeMap[edge.from]} \\overset{${edge.label}}{\\longrightarrow} ${nodeMap[edge.to]}`); // Change button text on selection
-            };
-            dropdownContent.appendChild(edgeOption);
-        }
-    });
-
-    // Trigger MathJax rendering for dropdown items
-    if (MathJax.typesetPromise) {
-        MathJax.typesetPromise();
-    }
-}
-
-function populateDropdownEven(graph) {
-    const dropdownContent = document.getElementById("dropdown-content");
-    dropdownContent.innerHTML = ""; // Clear existing content
-
-    const nodeMap = graph.nodes.reduce((map, node) => {
-        map[node.shortName] = node.label;
-        return map;
-    }, {});
-
-    graph.edges.forEach((edge) => {
-        if (edge.type === 'even' || edge.type === 'both') {
-            const edgeOption = document.createElement("a");
-            edgeOption.href = "#"; // No actual link, just for UI
-            edgeOption.innerHTML = `\\(${nodeMap[edge.from]} \\overset{${edge.label}}{\\longrightarrow} ${nodeMap[edge.to]}\\)`; // Use LaTeX
-            edgeOption.onclick = function(event) {
-                event.preventDefault();  // Prevent page from scrolling up
-                changeButtonText(`${nodeMap[edge.from]} \\overset{${edge.label}}{\\longrightarrow} ${nodeMap[edge.to]}`); // Change button text on selection
-            };
-            dropdownContent.appendChild(edgeOption);
-        }
-    });
-
-    // Trigger MathJax rendering for dropdown items
-    if (MathJax.typesetPromise) {
-        MathJax.typesetPromise();
-    }
-}
-
-/**
- * Changes the button text when an option is selected.
- * @param {string} selectedLabel - The label to display on the button.
- */
-function changeButtonText(selectedLabel) {
-    const button = document.querySelector(".dropbtn"); // Find the button
-    button.innerHTML = `\\(${selectedLabel}\\)`; // Use LaTeX
-    if (MathJax.typesetPromise) {
-        MathJax.typesetPromise();
-    }
-}
-
+// Generate the graph and populate dropdown on page load
 document.addEventListener("DOMContentLoaded", function() {
-    /**
-     * Toggles the visibility of the dropdown.
-     */
-    function toggleDropdown(event) {
-        const dropdownContent = document.getElementById("dropdown-content");
-        dropdownContent.classList.toggle("show");
-    }
-
-    // Close the dropdown if the user clicks outside of it
-    window.onclick = function(event) {
-        if (!event.target.matches('.dropbtn')) {
-            const dropdowns = document.getElementsByClassName("dropdown-content");
-            for (let i = 0; i < dropdowns.length; i++) {
-                const openDropdown = dropdowns[i];
-                if (openDropdown.classList.contains('show')) {
-                    openDropdown.classList.remove('show');
-                }
-            }
-        }
-    };
-
-    /**
-     * Populates the dropdown with the odd and both type edges of the graph.
-     * @param {Object} graph - The graph object containing nodes and edges.
-     */
-    function populateDropdown(graph) {
-        const dropdownContent = document.getElementById("dropdown-content");
-        dropdownContent.innerHTML = ""; // Clear existing content
-
-        const nodeMap = graph.nodes.reduce((map, node) => {
-            map[node.shortName] = node.label;
-            return map;
-        }, {});
-
-        graph.edges.forEach((edge) => {
-            if (edge.type === 'odd' || edge.type === 'both') {
-                const edgeOption = document.createElement("a");
-                edgeOption.href = "#"; // No actual link, just for UI
-                edgeOption.innerHTML = `\\(${nodeMap[edge.from]} \\overset{${edge.label}}{\\longrightarrow} ${nodeMap[edge.to]}\\)`; // Use LaTeX
-                edgeOption.onclick = function(event) {
-                    event.preventDefault();  // Prevent page from scrolling up
-                    changeButtonText(`${nodeMap[edge.from]} \\overset{${edge.label}}{\\longrightarrow} ${nodeMap[edge.to]}`); // Change button text on selection
-                    toggleDropdown(event); // Close dropdown after selection
-                };
-                dropdownContent.appendChild(edgeOption);
-            }
-        });
-
-        // Trigger MathJax rendering for dropdown items
-        if (MathJax.typesetPromise) {
-            MathJax.typesetPromise();
-        }
-    }
-
-    /**
-     * Changes the button text when an option is selected.
-     * @param {string} selectedLabel - The label to display on the button.
-     */
-    function changeButtonText(selectedLabel) {
-    const button = document.querySelector(".dropbtn");
-    button.innerHTML = `\\(${selectedLabel}\\)`;
-    
-    // Ensure MathJax rendering is complete before adding styles
-    if (MathJax.typesetPromise) {
-        MathJax.typesetPromise().then(() => {
-            // Make MathJax elements clickable
-            const mathJaxElements = button.getElementsByClassName('MathJax');
-            for (let element of mathJaxElements) {
-                element.style.pointerEvents = 'none';
-            }
-        });
-    }
-}
-
-// Update click handler to use event delegation
-document.addEventListener("DOMContentLoaded", function() {
-    document.querySelector(".dropbtn").addEventListener("click", function(event) {
-        // Check if click is on button or any of its children
-        if (event.currentTarget.contains(event.target)) {
-            const dropdownContent = document.getElementById("dropdown-content");
-            dropdownContent.classList.toggle("show");
-        }
-    });
-    
-});
-
-    // Add event listener to the dropdown button to toggle the dropdown
-    document.getElementById("dropdownButton").addEventListener("click", toggleDropdown);
-
-    // Generate the graph and populate dropdown on page load
-    window.generateGraph = function() {
-        graph = createGraph(2, 3); // Example parameters
-        populateDropdown(graph);
-    };
+    generateGraph()
 });
 
 // Add event delegation for dropdown toggles
@@ -557,8 +392,20 @@ document.addEventListener("click", function(event) {
                 dropdown.classList.remove('show');
             }
         }
-    }
+    } 
 });
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
+        const dropdowns = document.getElementsByClassName("dropdown-content");
+        for (let i = 0; i < dropdowns.length; i++) {
+            const openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
+};
 
 
 function drawARquiver(d,p,l,containerId){
@@ -591,7 +438,7 @@ function drawARquiver(d,p,l,containerId){
       });   
 }
 
-function updateARquiverOnInput(){
+function updateAllVerification(){
     let a = document.forms["menuConstructTaudPairForm"];
     let d_input = Number(a["constructTaudPair_d"].value);
     let p_input = Number(a["constructTaudPair_p"].value);
@@ -605,24 +452,28 @@ function updateARquiverOnInput(){
         let cancelButton = document.getElementById("resetCancel");
         continueButton.hidden = false;
         cancelButton.hidden = false;
-        continueButton.onclick = function(){ resetGraph(d_input,p_input,l_input,true); };
-        cancelButton.onclick = function(){ resetGraph(d_input,p_input,l_input,false);};
+        continueButton.onclick = function(){ updateAll(d_input,p_input,l_input,true); };
+        cancelButton.onclick = function(){ updateAll(d_input,p_input,l_input,false);};
     }
 }
 
 // Add this new combined update function
-function updateAll() {
-    let d_input = parseInt(document.getElementById("constructTaudPair_d").value, 10);
-    let l_input = parseInt(document.getElementById("constructTaudPair_l").value, 10); 
-    let p_input = parseInt(document.getElementById("constructTaudPair_p").value, 10);
+function updateAll(d,p,l,proceed) {
+    let errBox = document.getElementById("ErrorMessageConstructMenu");
+    let continueButton = document.getElementById("resetConfirmation");
+    let cancelButton = document.getElementById("resetCancel");
+    if (proceed) {
+        // Update the graph dropdown
+        graph = createGraph(d, l);
+        createSequentialDropdowns(p);
+        updateDropdownChoices(graph, 0);
     
-    // Update the graph dropdown
-    graph = createGraph(d_input, l_input);
-    createSequentialDropdowns(p_input);
-    updateDropdownChoices(graph, 0);
-    
-    // Update the AR quiver
-    drawARquiver(d_input, p_input, l_input, "displayDivForARQuiver");
+        // Update the AR quiver
+        drawARquiver(d, p, l, "displayDivForARQuiver");
+    }
+    cancelButton.hidden = true;
+    continueButton.hidden = true;
+    errBox.innerHTML = "";
 }
 
 function calculateBase(nodeIndex, d, l) {
