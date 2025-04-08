@@ -313,6 +313,10 @@ function selectChoice(buttonIndex, edge, nodeMap) {
     for (let i = 0; i < buttonIndex; i++) {
         const prevButton = document.querySelector(`#dropdownButton${i}`);
         prevButton.disabled = true;
+        // Add disabled class to MathJax elements
+        prevButton.querySelectorAll('.MathJax').forEach(element => {
+          element.classList.add('disabled-math');
+        });
     }
     
     // Enable next button if it exists
