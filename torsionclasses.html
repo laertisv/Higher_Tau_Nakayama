@@ -211,14 +211,14 @@
     <h2>\(d\)-torsion classes <span style="color:gray;cursor: pointer;" onclick="toggleSection(this,'textMutation1')">&#9207</span></h2>
     <div id="textdtorsionclasses">
       <p>
-        Higher torsion classes where introduced in [Jør16] and they were further studied in [AJST22] and [AHJ+24]. They are certain subcategories of \(d\)-cluster tilting subcategories defined in such a way that the case \(d=1\) recovers the classic notion of torsion classes.
+        Higher torsion classes where introduced in [Jør16] and they were further studied in [AJST22] and [AHJ+24]. They are certain subcategories of \(d\)-cluster tilting subcategories defined in such a way that the case \(d=1\) recovers the classical notion of torsion classes.
       </p>
       <p>
-        The paper [RV24] gives a combinatorial classification of \(d\)-torsion classes for algebras of the form \(\Lambda(n,l)\). Our description is given as a bijection to directed paths in a the graph \(G(\mathcal{C})\). In general, the graph has the following form: 
+        The paper [RV24] gives a combinatorial classification of \(d\)-torsion classes for algebras of the form \(\Lambda(n,l)\). Our description is given via a bijection to directed paths in a graph called \(G(\mathcal{C})\). In general, the graph \(G(\mathcal{C})\) has the following form: 
       </p>
       <img src="resources/graph1.png" alt="Paths in this graph give d-torsion classes" class="commutativeDiagram" width="500px">
       <p>
-        Consider a directed path of length \(p-1\) in this graph, which also starts at a vertex with subscript \(2t+1\). For each of the nodes traversed by such a path, we can assign a collection of modules in the "diagonals" of the \(d\)-cluster tilting subcategory in a certain way. Similarly, for each arrow we can define a certain collection of projective-injective modules lying between those diagonals. It turns out that such an assignment defines a \(d\)-torsion class in a unique way and that all \(d\)-torsion classes can be obtained as such. For details on how the aforementioned assignments are made we refer to [RV24], but keep reading for an interactive way to compute \(d\)-torsion classes using paths.
+        Consider a directed path of length \(p-1\) in this graph, which also starts at a vertex with subscript \(2t+1\). For each of the nodes traversed by such a path, we can assign a collection of modules in the "diagonals" of the \(d\)-cluster tilting subcategory in a certain way. Similarly, for each arrow we can define a certain collection of projective-injective modules lying between those diagonals. It turns out that such an assignment defines a \(d\)-torsion class in a unique way and that all \(d\)-torsion classes can be obtained by this procedure. For details on how the aforementioned assignments are made we refer to [RV24], but keep reading for an interactive way to compute \(d\)-torsion classes using paths.
       </p>
 
       <p>
@@ -227,16 +227,16 @@
       <img src="resources/graph2.png" alt="Don't forget these arrows if d=2!" class="commutativeDiagram" width="400px">
 
       <p>
-        On the other hand, if you are lucky enough to care only for the case \(l=2\), then the above graph simplifies to the following:
+        On the other hand, if you are lucky enough to care only for the case \(l=2\), then the whole graph \(G(\mathcal{C})\) simplifies to the following:
       </p>
       <img src="resources/graph3.png" alt="Life is easy when l=2!" class="commutativeDiagram" width="400px">
 
       <h2>Finding \(d\)-torsion classes</h2>
       <p>
-        Below you can generate an algebra \(\Lambda(n,l)\) which admit a \(d\)-cluster tilting subcategory, by choosing \(d\), \(p\) and \(l\) appropriately. The module category will be represented as it's AR-quiver where each vertex is an indecomposable. The darker vertices are indecomposables in the \(d\)-cluster tilting subcategory. Notice how they form some nice consecutive diagonals.
+        Below you can generate an algebra \(\Lambda(n,l)\) which admits a \(d\)-cluster tilting subcategory, by choosing \(d\), \(p\) and \(l\) appropriately. The module category will be represented by its AR-quiver where each vertex is an indecomposable. The darker vertices are indecomposables in the \(d\)-cluster tilting subcategory. Notice how they form some nice consecutive diagonals.
       </p>
       <p>
-        After you choose your parameters \(d\), \(p\) and \(l\), you can construct a path in the graph \(G(\mathcal{C})\). You can see the general form of the graph above if you want to see your choices, or you can just select the arrows one after another from the boxes below. Choosing an arrow restricts the choices for the next arrow so that you always construct a well-defined directed path. After you have chosen all arrows, you can press the "Create a \(d\)-torsion class" button which will define the \(d\)-torsion class for you. 
+        After you choose your parameters \(d\), \(p\) and \(l\), you can construct a path in the graph \(G(\mathcal{C})\). To do that you can select the arrows one after another from the boxes below. Choosing an arrow restricts the choices for the next arrow so that you always construct a well-defined directed path in the graph \(G(\mathcal{C})\). After you have chosen all arrows, you can press the "Create a \(d\)-torsion class" button which will define the \(d\)-torsion class for you. 
       </p>
     </div>
   </div>
@@ -279,21 +279,24 @@
 <div class="runningText">
 <h2>How does the bijection work?</h2>
   <p>
-    Here is some short explanation of how the generation of \(d\)-torsion classes from paths in \(G(\mathcal{C})\) works.
+    Here are a few more details on how the generation of \(d\)-torsion classes from paths in \(G(\mathcal{C})\) works.
   </p>
   <p>  
     The nodes of the graph are named in a relatively intuitive way. As mentioned, they correspond to the modules in the diagonals. 
-    Arrows going up indicate that we start at a module in a diagonal and include all of the modules in the diagonal above it, and dually for arrows going down. 
-    No number indicates taking all modules in a diagonal and a \(0\) indicates taking none. 
+    The index \(2t+1\) refers to the odd-numbered diagonals and the index \(2t\) refers to the even-numbered diagonals. 
+    Notice that depending on the parity, the diagonals have a different orientation.
+    The \(\uparrow\) symbol on a node indicates that we start at a module in a diagonal and include all of the modules in the diagonal above it. The module we start at is the one with length equal to the number appearing in that node. 
+    Dually for the \(\downarrow\) symbol. 
+    A node with no number indicates taking all modules in a diagonal and a \(0\) indicates taking none. 
     You will probably grasp the patterns after playing with them for a while. 
   </p>      
 <p>
   The arrows on the other hand are named alphabetically so the letter in their name does not give much information about them (but the numbers in their name do give information). 
   The arrows correspond to the projective-injective modules between the diagonals corresponding to their start and end node. 
   When including such a projective-injective module in the \(d\)-torsion class, it turns out that all successive projective-modules must also be included (until the next diagonal is reached). 
-  Hence the indeces contain the information of how many projective-injective modules are included between the two diagonals. 
+  Hence the indices contain the information of how many projective-injective modules are included between the two diagonals. 
   Note that not all possibilities are necessarily available, depending on the nature of the preceeding and upcoming diagonals. 
-  Sometimes there are more indeces on the arrows which contain information about their start and end node, but these are there only so that arrows can be easily distinguished. 
+  Sometimes there are more indices on the arrows which contain information about their start and end node, but these are there only so that arrows can be easily distinguished. 
   Playing a bit more with the interactive tool above should give sufficient intuition of how to compute the modules between diagonals, but for precise definitions we refer to the article [RV24].
 </p>
 </div>
