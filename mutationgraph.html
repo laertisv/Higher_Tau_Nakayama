@@ -5,13 +5,21 @@
     <title>Nakayama Tau_d - Mutation graph</title>
 
   <link rel="stylesheet" href="stylesheet.css">
+
+  <!-- External Jacascript-->
   <script src="./cytoscape-and-extensions/cytoscape.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   
+  <!-- Javascript for the interactive graph -->
   <script src="./js/mutation/generateAndMutate.js"></script>
   <script src="./js/mutation/mutation.js"></script>
   
+  <!-- Javascript for page interaction -->
+  <script src="./js/pageInteraction.js"></script>
+  
+  <!-- MathJax -->
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
   <style>
     #displayDivForARQuiver {
@@ -54,28 +62,6 @@
 }
   </style>
     
-    <script>
-      /* Ensure number input in menu field */
-      function isNumberKey(evt) {
-        var charCode = (evt.which) ? evt.which : evt.keyCode
-        if (charCode > 31 && (charCode < 48 || charCode > 57)){
-          return false;
-        }
-        return true;
-        }
-
-        /* Toggle sections */
-      function toggleSection(btnCall,idTag) {
-        let elmt = document.getElementById(idTag);
-        if (elmt.style.display === "none") {
-          elmt.style.display = "block";
-          btnCall.innerHTML = "&#9207";
-        } else {
-          elmt.style.display = "none";
-          btnCall.innerHTML = "&#9205"
-        }
-      }
-    </script>
     
 </head>
 <body>
@@ -83,7 +69,7 @@
     <nav>
       <ul>
         <li>
-          <a href="./index.html">Home</a>
+          <a href="./index.html"><i class="fa-solid fa-house"></i> Home</a>
         </li>
         <li>
           <a href="./construct.html">\(\tau_d\)-rigid pairs</a>
@@ -95,7 +81,7 @@
           <a href="./torsionclasses.html">\(d\)-torsion classes</a>
         </li>
         <li style="float:right">
-          <a href="./references.html">References</a>
+          <a href="./references.html"><i class="fa-solid fa-book"></i> References</a>
       </ul>
     </nav>
   </div>
@@ -107,7 +93,7 @@
 
 
   <h2>
-    Preliminary <span style="color:gray;cursor: pointer;" onclick="toggleSection(this,'textPreliminary')">&#9207</span>
+    Preliminary <span style="color:gray;cursor: pointer;" onclick="toggleSection(this,'textPreliminary')"><i class="fa-solid fa-chevron-up"></i></span>
   </h2>
   <div id="textPreliminary">
   <p>
@@ -124,7 +110,7 @@
   </p>
   </div>
   
-  <h2>Mutation <span style="color:gray;cursor: pointer;" onclick="toggleSection(this,'textMutation1')">&#9207</span></h2>
+  <h2>Mutation <span style="color:gray;cursor: pointer;" onclick="toggleSection(this,'textMutation1')"><i class="fa-solid fa-chevron-up"></i></span></h2>
   <div id="textMutation1">
   <p>
     The paper [RV24] only deals with the concept of mutation on a surface level, however as it bears witness of the over-arching structure we provide some of our findings here. 
@@ -288,7 +274,7 @@
     </p>
   </div>
   <p>
-    Files with changelog at <a href="https://github.com/endresr/Higher_Tau_Nakayama"><i class="fa fa-github"></i>GitHub</a>.<br>
+    Files with changelog at <a href="https://github.com/endresr/Higher_Tau_Nakayama"><i class="fa-brands fa-github"></i>GitHub</a>.<br>
     Last updated: <span id="showUpdated"></span>
   </p>
 </footer>

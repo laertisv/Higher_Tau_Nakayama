@@ -5,16 +5,23 @@
     <title>Nakayama d-torsion classes</title>
 
     <link rel="stylesheet" href="stylesheet.css">
+    
+    <!-- External Javascript -->
     <script src="./cytoscape-and-extensions/cytoscape.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-<!-- MathJax -->
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+   
 
 <!-- Include testTorsion.js -->
 <script src="./js/mutation/generateAndMutate.js"></script>
 <script src="./js/main.js"></script>
 <script src="./js/torsion/generateTorsion.js"></script>
+
+<!-- Javascript for page interaction -->
+<script src="./js/pageInteraction.js"></script>
+  
+<!-- MathJax -->
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!-- FontAwesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <style>
     #displayDivForARQuiver {
@@ -132,29 +139,7 @@
         background-color: #90EE90 !important; /* Light green */
 }
   </style>
-    
-    <script>
-      /* Ensure number input in menu field */
-      function isNumberKey(evt) {
-        var charCode = (evt.which) ? evt.which : evt.keyCode
-        if (charCode > 31 && (charCode < 48 || charCode > 57)){
-          return false;
-        }
-        return true;
-        }
-
-        /* Toggle sections */
-      function toggleSection(btnCall,idTag) {
-        let elmt = document.getElementById(idTag);
-        if (elmt.style.display === "none") {
-          elmt.style.display = "block";
-          btnCall.innerHTML = "&#9207";
-        } else {
-          elmt.style.display = "none";
-          btnCall.innerHTML = "&#9205"
-        }
-      }
-    </script>
+   
     
 
 <style>
@@ -197,7 +182,7 @@
     <nav>
       <ul>
         <li>
-          <a href="./index.html">Home</a>
+          <a href="./index.html"><i class="fa-solid fa-house"></i> Home</a>
         </li>
         <li>
           <a href="./construct.html">\(\tau_d\)-rigid pairs</a>
@@ -209,7 +194,7 @@
           <a href="./torsionclasses.html" class="activeNav">\(d\)-torsion classes</a>
         </li>
         <li style="float:right">
-          <a href="./references.html">References</a>
+          <a href="./references.html"><i class="fa-solid fa-book"></i> References</a>
       </ul>
     </nav>
   </div>
@@ -219,7 +204,7 @@
     <h1>\(d\)-torsion classes</h1>
     <p>This is a supplement to the paper <cite>\(\tau_d\)-tilting theory for Nakayama algebras</cite> [RV24].</p>
     
-    <h2>Preliminary <span style="color:gray;cursor: pointer;" onclick="toggleSection(this,'textPreliminary')">&#9207</span></h2>
+    <h2>Preliminary <span style="color:gray;cursor: pointer;" onclick="toggleSection(this,'textPreliminary')"><i class="fa-solid fa-chevron-up"></i></span></h2>
     <div id="textPreliminary">
       <p>
         We are working with linear Nakayama algebras with homogeneous relations, admitting a \(d\)-cluster tilting subcategory \(\mathcal{C}\). Specifically, for an algebraically closed field \(\mathbf{k}\), we are working with the algebras \(\Lambda(n,l)=\mathbf{k}\mathbb{A}_n/R^l\), where \(R\) is the arrow ideal of the quiver \(\mathbb{A}_n\) given by $$ n\longrightarrow n-1 \longrightarrow \cdots \longrightarrow 2 \longrightarrow 1 .$$ The indecomposable modules of \(\operatorname{mod}\Lambda\) are uniquely given through their support on \(\mathbb{A}_n\), which can be described as subintervals of \([1,n]\). Hence, they will be denoted by \(M(a,b)\), where \([a,b]\) is their support-interval.
@@ -229,7 +214,7 @@
       </p>
     </div>
     
-    <h2>\(d\)-torsion classes <span style="color:gray;cursor: pointer;" onclick="toggleSection(this,'textdtorsionclasses')">&#9207</span></h2>
+    <h2>\(d\)-torsion classes <span style="color:gray;cursor: pointer;" onclick="toggleSection(this,'textdtorsionclasses')"><i class="fa-solid fa-chevron-up"></i></span></h2>
     <div id="textdtorsionclasses">
       <p>
         Higher torsion classes where introduced in [Jør16] and they were further studied in [AJST22] and [AHJ+24]. They are certain subcategories of \(d\)-cluster tilting subcategories defined in such a way that the case \(d=1\) recovers the classical notion of torsion classes.
@@ -362,7 +347,7 @@ In preparation (2025+).
     </p>
   </div>
   <p>
-    Files with changelog at <a href="https://github.com/endresr/Higher_Tau_Nakayama"><i class="fa fa-github"></i>GitHub</a>.<br>
+    Files with changelog at <a href="https://github.com/endresr/Higher_Tau_Nakayama"><i class="fa-brands fa-github"></i>GitHub</a>.<br>
     Last updated: <span id="showUpdated"></span>
   </p>
 </footer>
