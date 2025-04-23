@@ -21,47 +21,6 @@
   <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-  <style>
-    #displayDivForARQuiver {
-        width: 100%;
-        height: 300px !important;
-        position: relative;
-        border:1px solid black;
-        display: block;
-        float:left;    
-    }
-    .runningText, #menuChooseAlgebra, #menuMutate{
-    width: 650px;
-    margin:auto;
-    overflow: auto;
-    }
-
-
-#MutateFromSupport {
-    background-color: rgba(100,149,237,0.7);
-}
-#MutateFromRigid {
-    background-color: rgba(178,34,34,0.7);
-}
-#MutateFromSupport:hover {
-    background-color: rgba(100,149,237,0.5);
-}
-#MutateFromRigid:hover {
-    background-color: rgba(178,34,34,0.5);
-}
-#MutateFromSupport:active {
-    background-color: rgba(100,149,237,1);
-}
-#MutateFromRigid:active {
-    background-color: rgba(178,34,34,1);
-}
-
-.pdf{
-  width: 100%;
-  aspect-ratio: 4/3;
-}
-  </style>
-    
     
 </head>
 <body>
@@ -221,7 +180,7 @@
 </div>
 
 <div class="runningText">
-  <h2 id="mutationGraphLambda93">Mutation graph of \(\Lambda(9,3)\) <span style="color:gray;cursor: pointer;" onclick="toggleSection(this,'textMutation2')">&#9207</span></h2>
+  <h2 id="mutationGraphLambda93">Mutation graph of \(\Lambda(9,3)\) <span style="color:gray;cursor: pointer;" onclick="toggleSection(this,'textMutation2')"><i class="fa-solid fa-chevron-up"></i></span></span></h2>
 <div id="textMutation2">  
 <p>
   There are in total \(160\) different summand-maximal \(\tau_2\)-rigid pairs in the \(2\)-cluster tilting subcategory of \(\operatorname{mod}\Lambda(9,3)\). A pair here have at most \(6\) possible mutations and at least \(3\).<br> <a href="./resources/CompleteGraph.pdf">Click here to download pdf</a>.
@@ -231,7 +190,7 @@
   </div>
 
   <h2 id="mutationGraphAuslanderA3">
-    Mutation graph of the Auslander algebra of \(\mathbb{A}_3\) <span style="color:gray;cursor: pointer;" onclick="toggleSection(this,'textMutation3')">&#9207</span>
+    Mutation graph of the Auslander algebra of \(\mathbb{A}_3\) <span style="color:gray;cursor: pointer;" onclick="toggleSection(this,'textMutation3')"><i class="fa-solid fa-chevron-up"></i></span></span>
   </h2>
 
   <div id="textMutation3">
