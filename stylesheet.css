@@ -3,13 +3,49 @@ body {
     line-height: 1.4;
     font-size:18px;
     color:#444;
+    margin: 0;
 }
 #mainContainer {
+    margin-top: 2em;
     min-height: calc(100vh - 10em);
     position: relative;
 }
 h1,h2,h3,h4{
     line-height:1.2;
+}
+
+#header {
+    padding-left: 50px;
+    padding-right: 50px;
+    background-color: #f1f1f1;
+    position: fixed;
+    top:0;
+    left:0;
+    right:0;
+    z-index: 1000;
+}
+#header ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+#header ul li {
+    display: inline-block;
+    
+}
+#header ul li a:hover:not(.activeNav) {
+    background-color: #dfdfdf;
+}
+
+#header ul li a {
+    display: block;
+    text-decoration: none;
+    color: #444;
+    padding: 10px;
+}
+#header ul li a.activeNav {
+    background-color: #c7c6c6;
+    font-weight: bold;
 }
 
 footer {
