@@ -410,10 +410,31 @@ button:disabled {
 .references ul li::before {
     content: "["attr(author-shorthand)"]";
     padding-right: 5px;
-}
+  }
 .references ul li {
   padding-left: 3em;
   text-indent: -3em;
+}
+
+.reference-title {
+    font-weight: bold;
+    font-size: larger;
+}
+.reference-authors::before {
+    content: "Authors: ";
+    font-weight: bold;
+}
+.reference-journal::before {
+    content: "Journal: ";
+    font-weight: bold;
+}
+.reference-links a{
+    font-weight: bold;
+    text-decoration: none;
+    padding-right: 10px;
+}
+.reference-item {
+    margin-bottom: 1em;
 }
 
 
