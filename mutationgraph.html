@@ -5,89 +5,54 @@
     <title>Nakayama Tau_d - Mutation graph</title>
 
   <link rel="stylesheet" href="stylesheet.css">
+
+  <!-- External Jacascript-->
   <script src="./cytoscape-and-extensions/cytoscape.min.js"></script>
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   
+  <!-- Javascript for the interactive graph -->
   <script src="./js/mutation/generateAndMutate.js"></script>
   <script src="./js/mutation/mutation.js"></script>
   
+  <!-- Javascript for page interaction -->
+  <script src="./js/pageInteraction.js"></script>
+  
+  <!-- MathJax -->
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-  <style>
-    #displayDivForARQuiver {
-        width: 100%;
-        height: 300px !important;
-        position: relative;
-        border:1px solid black;
-        display: block;
-        float:left;    
-    }
-    .runningText, #menuChooseAlgebra, #menuMutate{
-    width: 650px;
-    margin:auto;
-    overflow: auto;
-    }
-
-
-#MutateFromSupport {
-    background-color: rgba(100,149,237,0.7);
-}
-#MutateFromRigid {
-    background-color: rgba(178,34,34,0.7);
-}
-#MutateFromSupport:hover {
-    background-color: rgba(100,149,237,0.5);
-}
-#MutateFromRigid:hover {
-    background-color: rgba(178,34,34,0.5);
-}
-#MutateFromSupport:active {
-    background-color: rgba(100,149,237,1);
-}
-#MutateFromRigid:active {
-    background-color: rgba(178,34,34,1);
-}
-
-.pdf{
-  width: 100%;
-  aspect-ratio: 4/3;
-}
-  </style>
-    
-    <script>
-      /* Ensure number input in menu field */
-      function isNumberKey(evt) {
-        var charCode = (evt.which) ? evt.which : evt.keyCode
-        if (charCode > 31 && (charCode < 48 || charCode > 57)){
-          return false;
-        }
-        return true;
-        }
-
-        /* Toggle sections */
-      function toggleSection(btnCall,idTag) {
-        let elmt = document.getElementById(idTag);
-        if (elmt.style.display === "none") {
-          elmt.style.display = "block";
-          btnCall.innerHTML = "&#9207";
-        } else {
-          elmt.style.display = "none";
-          btnCall.innerHTML = "&#9205"
-        }
-      }
-    </script>
     
 </head>
 <body>
+  <div id="header">
+    <nav>
+      <ul>
+        <li>
+          <a href="./index.html"><i class="fa-solid fa-house"></i> Home</a>
+        </li>
+        <li>
+          <a href="./construct.html">\(\tau_d\)-rigid pairs</a>
+        </li>
+        <li>
+          <a href="./mutationgraph.html" class="activeNav">Mutation</a>
+        </li>
+        <li>
+          <a href="./torsionclasses.html">\(d\)-torsion classes</a>
+        </li>
+        <li style="float:right">
+          <a href="./references.html"><i class="fa-solid fa-book"></i> References</a>
+      </ul>
+    </nav>
+  </div>
 
+<div id="mainContainer">
 <div class="runningText">
   <h1>Mutation of \(\tau_d\)-tilting pairs</h1>
-  <p id="lastUpdate">Last updated: <span id="showUpdated"></span></p>
-  <p><a href="./index.html">Home</a> | <a href="./construct.html">\(\tau_d\)-rigid pairs</a> | <a href="./mutationgraph.html">Mutation</a> | <a href="./torsionclasses.html">\(d\)-torsion classes</a></p>
   <p>This is a supplement to the paper <cite>\(\tau_d\)-tilting theory for Nakayama algebras</cite> [RV24].</p>
 
 
   <h2>
-    Preliminary <span style="color:gray;cursor: pointer;" onclick="toggleSection(this,'textPreliminary')">&#9207</span>
+    Preliminary <span style="color:gray;cursor: pointer;" onclick="toggleSection(this,'textPreliminary')"><i class="fa-solid fa-chevron-up"></i></span>
   </h2>
   <div id="textPreliminary">
   <p>
@@ -104,7 +69,7 @@
   </p>
   </div>
   
-  <h2>Mutation <span style="color:gray;cursor: pointer;" onclick="toggleSection(this,'textMutation1')">&#9207</span></h2>
+  <h2>Mutation <span style="color:gray;cursor: pointer;" onclick="toggleSection(this,'textMutation1')"><i class="fa-solid fa-chevron-up"></i></span></h2>
   <div id="textMutation1">
   <p>
     The paper [RV24] only deals with the concept of mutation on a surface level, however as it bears witness of the over-arching structure we provide some of our findings here. 
@@ -215,7 +180,7 @@
 </div>
 
 <div class="runningText">
-  <h2 id="mutationGraphLambda93">Mutation graph of \(\Lambda(9,3)\) <span style="color:gray;cursor: pointer;" onclick="toggleSection(this,'textMutation2')">&#9207</span></h2>
+  <h2 id="mutationGraphLambda93">Mutation graph of \(\Lambda(9,3)\) <span style="color:gray;cursor: pointer;" onclick="toggleSection(this,'textMutation2')"><i class="fa-solid fa-chevron-up"></i></span></span></h2>
 <div id="textMutation2">  
 <p>
   There are in total \(160\) different summand-maximal \(\tau_2\)-rigid pairs in the \(2\)-cluster tilting subcategory of \(\operatorname{mod}\Lambda(9,3)\). A pair here have at most \(6\) possible mutations and at least \(3\).<br> <a href="./resources/CompleteGraph.pdf">Click here to download pdf</a>.
@@ -225,7 +190,7 @@
   </div>
 
   <h2 id="mutationGraphAuslanderA3">
-    Mutation graph of the Auslander algebra of \(\mathbb{A}_3\) <span style="color:gray;cursor: pointer;" onclick="toggleSection(this,'textMutation3')">&#9207</span>
+    Mutation graph of the Auslander algebra of \(\mathbb{A}_3\) <span style="color:gray;cursor: pointer;" onclick="toggleSection(this,'textMutation3')"><i class="fa-solid fa-chevron-up"></i></span></span>
   </h2>
 
   <div id="textMutation3">
@@ -253,6 +218,25 @@
     </li>
   </ul>
 </div>
+
+</div>
+
+<footer>
+  <div class="author">
+    <p class="authorName">Endre S. Rundsveen</p>
+    <p class="authorEmail"><i class="fa fa-envelope"></i> <a href="mailto:endre.s.rundsveen@ntnu.no">endre.s.rundsveen@ntnu.no</a></p>
+    </p>
+  </div>
+  <div class="author">
+    <p class="authorName">Laertis Vaso</p>
+    <p class="authorEmail"><i class="fa fa-envelope"></i> <a href="mailto:laertis.vaso@gmail.com">laertis.vaso@gmail.com</a></p>
+    </p>
+  </div>
+  <p>
+    Files with changelog at <a href="https://github.com/endresr/Higher_Tau_Nakayama"><i class="fa-brands fa-github"></i>GitHub</a>.<br>
+    Last updated: <span id="showUpdated"></span>
+  </p>
+</footer>
 
 <script>
     drawARquiver(2,4,3,"displayDivForARQuiver");
