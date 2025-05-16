@@ -3,8 +3,8 @@
 This project provides an interactive tool to visualize the higher τ-tilting theory of linear Nakayama algebras with homogeneous relations based on the results of the article [τ_d-tilting theory for linear Nakayama algebras](https://arxiv.org/abs/2410.19505). 
 
 ## Features:
-- Construction of τ_d-rigid pairs, with an easy way to check if they are strongly maximal.
-- Mutation of strongly maximal τ_d-rigid pairs.
+- Construction of τ_d-rigid pairs, with an easy way to check if they are summand maximal.
+- Mutation of summand maximal τ_d-rigid pairs.
 - Construction of d-torsion classes.
 
 ## Getting Started
@@ -19,7 +19,7 @@ Navigate to the cloned directory and open index.html in your preferred web brows
 ## Project Structure
 - index.html: Starting page.
 - construct.html: Page with directions for constructing τ_d-rigid pairs.
-- mutationgraph.html: Page with directions for computing mutations of strongly maximal τ_d-rigid pairs.
+- mutationgraph.html: Page with directions for computing mutations of summand maximal τ_d-rigid pairs.
 - torsionclasses.html: Page with directions for computing d-torsion classes.
 - references.html: References.
 - js/: Contains JavaScript files.
