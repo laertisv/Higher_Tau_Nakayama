@@ -625,19 +625,17 @@ function processEdge(edge, position, d, l) {
                 return modules;
             }
         }
-        
         const matchL = name.match(/^l(\d+)(\d+)$/);
         if (matchL) {
             const h = parseInt(matchL[1]);
             const k = parseInt(matchL[2]);
             if (h >= 1 && h < l - 1 && k < l - h) {
-                for (let j = 0; j < k; j++) {
+                for (let j = 0; j < maxNumber - (l - 1) + (h+k); j++) {
                     modules.push(`M-${endingBase - 1 - j}-${endingBase - 1 + (l - 1) - j}`);
                 }
                 return modules;
             }
         }
-        
         if (d === 2) {
             const matchM = name.match(/^m(\d+)(\d+)(\d+)$/);
             if (matchM) {
@@ -645,7 +643,7 @@ function processEdge(edge, position, d, l) {
                 const m = parseInt(matchM[2]);
                 const k = parseInt(matchM[3]);
                 if (h >= 1 && h < l - 2 && k >= 2 && k < l - h && m < l - (h + k)) {
-                    for (let j = 0; j < m; j++) {
+                    for (let j = 0; j < maxNumber - (l - 1) + (h + m); j++) {
                         modules.push(`M-${endingBase - 1 - j}-${endingBase - 1 + (l - 1) - j}`);
                     }
                     return modules;
